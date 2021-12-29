@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "ESNext",
+    "lib": ["DOM", "ESNext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "noImplicitThis": false,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "paths": {
+      "context-state": ["./src"]
+    }
+  },
+  "include": ["src/**/*", ".eslintrc.js", ".prettierrc.js", "babel.config.js", "jest.config.js"],
+  "exclude": ["node_modules", "dist", "example"]
+}
