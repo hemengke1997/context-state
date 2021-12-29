@@ -2,7 +2,7 @@
 
 > 简单、优雅的 React hooks 状态管理方案
 
-[![CI](https://img.shields.io/npm/v/context-state)](https://www.npmjs.com/package/context-state) [![CI](https://img.shields.io/npm/l/context-state)]() [![CI](https://img.shields.io/bundlephobia/minzip/context-state)]()
+[![CI](https://img.shields.io/npm/v/context-state)](https://www.npmjs.com/package/context-state) [![CI](https://img.shields.io/npm/l/context-state)]()
 
 ## codesandbox
 [EXAMPLE](https://codesandbox.io/s/delicate-http-rkgv1?file=/src/CounterContainer.tsx)
