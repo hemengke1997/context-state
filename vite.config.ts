@@ -1,34 +1,18 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import typescript2 from 'rollup-plugin-typescript2';
+import typescript from '@rollup/plugin-typescript';
 const path = require('path');
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
-    {
-      ...typescript2({
-        check: false,
-        tsconfig: path.resolve(__dirname, `tsconfig.json`),
-        tsconfigOverride: {
-          compilerOptions: {
-            sourceMap: false,
-            declaration: true,
-            declarationMap: false,
-          },
-          include: [
-            "src/index.tsx"
-          ]
-        },
-      }),
-      enforce: 'pre',
-      apply: 'build',
-    },
+    typescript({
+      include: ['src/index.tsx', 'src/utils/useMemoizedFn.ts', 'src/utils/shallowEqual.ts'],
+    }),
   ],
   build: {
     outDir: 'dist',
-    minify: true,
     lib: {
       entry: path.resolve(__dirname, 'src/index.tsx'),
       name: 'context-state',
