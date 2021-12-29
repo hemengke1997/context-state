@@ -4,16 +4,6 @@
 
 [![CI](https://img.shields.io/npm/v/context-state)](https://www.npmjs.com/package/context-state) [![CI](https://img.shields.io/npm/l/context-state)]() [![CI](https://img.shields.io/bundlephobia/minzip/context-state)]()
 
-- **React Hooks** _适用于 React Hooks 组件_
-- **专注性能** _减少额外 rerender，运行畅快_
-- **无依赖** _仅仅使用了 React，无第三方库的依赖_
-- **简单** _只需会 React Hooks，即可上手_
-- **TypeScript 编写** _完备的类型提示，轻松编写代码_
-- **容易集成** _可渐进式引入，与其他状态管理共存_
-- **通用** _组件、模块、应用以及服务端渲染_
-- **灵活** _基于 Context，轻松组合 Provider_
-- **轻松迁移** _它基于自定义 Hooks 创建_
-
 ## codesandbox
 [EXAMPLE](https://codesandbox.io/s/delicate-http-rkgv1?file=/src/CounterContainer.tsx)
 
