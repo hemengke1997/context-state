@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [
     react(),
     typescript({
+      tsconfig: path.resolve(__dirname, 'tsconfig.json'),
       include: ['src/index.tsx', 'src/utils/useMemoizedFn.ts', 'src/utils/shallowEqual.ts'],
     }),
   ],
@@ -26,7 +27,6 @@ export default defineConfig({
         drop_console: true,
       },
     },
-
     // watch: {},
     rollupOptions: {
       external: ['react', 'react-dom'],
