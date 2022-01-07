@@ -40,8 +40,6 @@ const ErrorText =
 export function createContainer<Value, State = any>(useHook: UseHookType<Value, State>) {
   const Context = React.createContext<ContextValue<Value> | typeof EMPTY>(EMPTY);
 
-  const context = React.useContext(Context);
-
   const Provider: React.FC<ContainerProviderProps<State>> = React.memo(({ value, children }) => {
     const providerValue = useHook(value);
 
@@ -78,6 +76,7 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
   });
 
   function useContainer(): Value {
+    const context = React.useContext(Context);
     if (context === EMPTY) {
       throw new Error(ErrorText);
     }
@@ -119,6 +118,8 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
         throw new Error(`[context-state]: You must pass a function as an equality function to useSelector👻`);
       }
     }
+
+    const context = React.useContext(Context);
 
     if (context === EMPTY) {
       throw new Error(ErrorText);
@@ -238,6 +239,7 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
    * update(() => setState(...));
    */
   function useContextUpdate() {
+    const context = React.useContext(Context);
     if (context === EMPTY) {
       throw new Error(ErrorText);
     }
