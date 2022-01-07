@@ -34,8 +34,13 @@ type ContextValue<Value> = {
 
 type UseHookType<Value, State> = (value?: State) => Value;
 
+const ErrorText =
+  '[context-state]: Component must be wrapped with <Container.Provider>👻. If component is wrapped, you can try restart project💊';
+
 export function createContainer<Value, State = any>(useHook: UseHookType<Value, State>) {
   const Context = React.createContext<ContextValue<Value> | typeof EMPTY>(EMPTY);
+
+  const context = React.useContext(Context);
 
   const Provider: React.FC<ContainerProviderProps<State>> = React.memo(({ value, children }) => {
     const providerValue = useHook(value);
@@ -73,11 +78,10 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
   });
 
   function useContainer(): Value {
-    const value = React.useContext(Context);
-    if (value === EMPTY) {
-      throw new Error('[context-state]: Component must be wrapped with <Container.Provider>👻');
+    if (context === EMPTY) {
+      throw new Error(ErrorText);
     }
-    return value?.[CONTEXT_VALUE].v.current;
+    return context?.[CONTEXT_VALUE].v.current;
   }
 
   /**
@@ -116,10 +120,8 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
       }
     }
 
-    const context = React.useContext(Context);
-
     if (context === EMPTY) {
-      throw new Error('[context-state]: Component must be wrapped with <Container.Provider>👻');
+      throw new Error(ErrorText);
     }
 
     const contextValue = context?.[CONTEXT_VALUE];
@@ -236,9 +238,8 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
    * update(() => setState(...));
    */
   function useContextUpdate() {
-    const context = React.useContext(Context);
     if (context === EMPTY) {
-      throw new Error('[context-state]: Component must be wrapped with <Container.Provider>👻');
+      throw new Error(ErrorText);
     }
     const contextValue = context?.[CONTEXT_VALUE];
     if (typeof process === 'object' && process.env.NODE_ENV !== 'production') {
