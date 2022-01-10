@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
-import { createContainer } from 'context-state';
+import { createContainer } from '../src';
 
 interface Counter1Props {
   count: number;

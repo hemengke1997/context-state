@@ -130,7 +130,7 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
     const {
       /* "v"alue     */ v: { current: value },
       /* "l"isteners */ l: listeners,
-    } = contextValue!;
+    } = contextValue || {};
 
     const [, forceRender] = React.useReducer((s) => s + 1, 0);
 

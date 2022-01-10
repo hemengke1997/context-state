@@ -1,5 +1,5 @@
 import React  from 'react';
-import { createContainer, useMemoizedFn } from 'context-state';
+import { createContainer, useMemoizedFn } from '@minko-fe/context-state';
 
 function useCounter(initialState?: {
   v: number;

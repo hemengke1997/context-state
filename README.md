@@ -2,15 +2,14 @@
 
 > 简单、优雅的 React hooks 状态管理方案
 
-[![CI](https://img.shields.io/npm/v/context-state)](https://www.npmjs.com/package/context-state) [![CI](https://img.shields.io/npm/l/context-state)]()
-
 ## codesandbox
+
 [EXAMPLE](https://codesandbox.io/s/delicate-http-rkgv1?file=/src/CounterContainer.tsx)
 
 ## 安装
 
 ```bash
-yarn add context-state
+yarn add @minko-fe/context-state
 ```
 
 ## 介绍
@@ -25,7 +24,7 @@ v1.1.0 之后，将不再依赖 `calculateChangedBits`
 
 ```tsx
 import React from 'react';
-import { createContainer, useMemoizedFn } from 'context-state';
+import { createContainer, useMemoizedFn } from '@minko-fe/context-state';
 
 function useCounter() {
   const [count, setCount] = React.useState(0);
@@ -68,7 +67,7 @@ render(<App />, document.getElementById('root'));
 ### `createContainer(useHook)`
 
 ```tsx
-import { createContainer, useMemoizedFn } from 'context-state';
+import { createContainer, useMemoizedFn } from '@minko-fe/context-state';
 
 function useCustomHook() {
   const [value, setInput] = useState();
@@ -152,7 +151,7 @@ Container.withPicker(ChildComponent, ['value']);
 此方法在会在 [concurrent 模式](https://zh-hans.reactjs.org/docs/concurrent-mode-intro.html) 中生效
 
 ```txs
-import { useContextUpdate } from 'context-state';
+import { useContextUpdate } from '@minko-fe/context-state';
 
 const update = useContextUpdate();
 update(() => setState(...));

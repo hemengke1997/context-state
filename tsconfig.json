@@ -24,7 +24,7 @@
     "experimentalDecorators": true,
     "downlevelIteration": true,
     "paths": {
-      "context-state": ["./src"]
+      "@minko-fe/context-state": ["./src"]
     }
   },
   "include": ["src/**/*", ".eslintrc.js", ".prettierrc.js", "babel.config.js", "jest.config.js"],
