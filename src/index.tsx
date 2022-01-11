@@ -5,6 +5,7 @@ import shallowEqual from './utils/shallowEqual';
 import pick from './utils/pick';
 import useMemoizedFn from './utils/useMemoizedFn';
 import { batchedUpdates } from './utils/batchedUpdates';
+import ContextCache from './utils/contextCache';
 
 type EqualityFC<T = any> = (old: T, now: T) => boolean;
 
@@ -24,6 +25,8 @@ const CONTEXT_VALUE: unique symbol = Symbol();
 
 const EMPTY: unique symbol = Symbol();
 
+export type ContextType<Value> = React.Context<ContextValue<Value> | typeof EMPTY>;
+
 type ContextValue<Value> = {
   [CONTEXT_VALUE]: {
     /* "v"alue     */ v: MutableRefObject<Value>;
@@ -38,7 +41,11 @@ const ErrorText =
   '[context-state]: Component must be wrapped with <Container.Provider>👻. If component is wrapped, you can try restart project💊';
 
 export function createContainer<Value, State = any>(useHook: UseHookType<Value, State>) {
-  const Context = React.createContext<ContextValue<Value> | typeof EMPTY>(EMPTY);
+  const contextCache = ContextCache.getInstance<Value>();
+
+  const Context = contextCache.getCache() || React.createContext<ContextValue<Value> | typeof EMPTY>(EMPTY);
+
+  contextCache.setCache(Context);
 
   const Provider: React.FC<ContainerProviderProps<State>> = React.memo(({ value, children }) => {
     const providerValue = useHook(value);
