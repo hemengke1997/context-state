@@ -39,8 +39,7 @@
     "prettier": "prettier -c --write \"src/**/*\"",
     "test": "jest",
     "prepublish": "yarn build",
-    "upgrade:deps": "yarn upgrade-interactive --latest",
-    "run-publish": "yarn publish --access public"
+    "upgrade:deps": "yarn upgrade-interactive --latest"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
@@ -82,6 +81,7 @@
     "vite": "^2.7.9"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   }
 }
