@@ -38,7 +38,7 @@ type ContextValue<Value> = {
 type UseHookType<Value, State> = (value?: State) => Value;
 
 const ErrorText =
-  '[context-state]: Component must be wrapped with <Container.Provider>👻. If component is wrapped, you can try restart project💊';
+  '[context-state]: Component must be wrapped with <Container.Provider>👻. If component is wrapped, You can try to restart the project💊';
 
 export function createContainer<Value, State = any>(useHook: UseHookType<Value, State>) {
   const contextCache = ContextCache.getInstance<Value>();
