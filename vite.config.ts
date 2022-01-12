@@ -9,13 +9,13 @@ export default defineConfig({
     react(),
     typescript({
       tsconfig: path.resolve(__dirname, 'tsconfig.json'),
-      include: ['src/index.tsx', 'src/utils/useMemoizedFn.ts', 'src/utils/shallowEqual.ts'],
+      include: ['src/index.ts', 'src/utils/useMemoizedFn.ts', 'src/utils/shallowEqual.ts'],
     }),
   ],
   build: {
     outDir: 'dist',
     lib: {
-      entry: path.resolve(__dirname, 'src/index.tsx'),
+      entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'context-state',
       fileName: 'index',
       formats: ['es', 'umd'],
