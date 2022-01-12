@@ -4,6 +4,7 @@ import useIsomorphicLayoutEffect from './utils/useIsomorphicLayoutEffect';
 import shallowEqual from './utils/shallowEqual';
 import pick from './utils/pick';
 import useMemoizedFn from './utils/useMemoizedFn';
+import useSafeState from './utils/useSafeState';
 
 const ErrorText = '[context-state]: Component must be wrapped with <Container.Provider>👻';
 
@@ -60,6 +61,7 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
         listener(providerValue);
       });
     }, [providerValue]);
+
     return createElement(
       Context.Provider,
       {
@@ -103,7 +105,7 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
       /* "l"isteners */ l: listeners,
     } = contextValue;
 
-    const [, forceRender] = React.useReducer((s) => s + 1, 0);
+    const [, forceRender] = useSafeState(0);
 
     const selected = selector(value);
 
@@ -140,7 +142,7 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
           if (equalityFn(previousCtx.selected, newSelected)) {
             return;
           }
-          forceRender();
+          forceRender((n) => n + 1);
         } catch (e) {}
       }
       // register listener
