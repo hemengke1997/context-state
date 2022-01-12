@@ -133,30 +133,6 @@ function ChildComponent() {
 }
 ```
 
-### `Container.withPicker()`
-
-`usePicker` 的高阶组件形式
-
-```tsx
-function ChildComponent({ value }) {
-  return <span>{value}</span>;
-}
-
-Container.withPicker(ChildComponent, ['value']);
-```
-
-### `useContextUpdate()`
-
-当 `context` 更新时执行钩子。
-此方法在会在 [concurrent 模式](https://zh-hans.reactjs.org/docs/concurrent-mode-intro.html) 中生效
-
-```txs
-import { useContextUpdate } from '@minko-fe/context-state';
-
-const update = useContextUpdate();
-update(() => setState(...));
-```
-
 ### `useMemoizedFn`
 
 持久化 `function` 的 `Hook`。（来自 `ahooks` 中 `useMemoizedFn`）
