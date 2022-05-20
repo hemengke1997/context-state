@@ -1,6 +1,6 @@
 {
   "name": "@minko-fe/context-state",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "React state management library",
   "author": "hemengke1997 <23536175@qq.com>",
   "types": "./dist/index.d.ts",
@@ -47,9 +47,9 @@
       "prettier --write"
     ]
   },
-  "dependencies": {
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
@@ -82,6 +82,6 @@
   },
   "browserslist": [
     "> 1%",
-    "not IE < 10"
+    "not IE < 11"
   ]
 }
