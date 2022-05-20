@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import typescript from '@rollup/plugin-typescript';
-const path = require('path');
+import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +12,9 @@ export default defineConfig({
       include: ['src/index.ts', 'src/utils/useMemoizedFn.ts', 'src/utils/shallowEqual.ts'],
     }),
   ],
+  esbuild: {
+    pure: ['console.log'],
+  },
   build: {
     outDir: 'dist',
     lib: {
@@ -20,13 +23,8 @@ export default defineConfig({
       fileName: 'index',
       formats: ['es', 'umd'],
     },
-    terserOptions: {
-      compress: {
-        keep_infinity: true,
-        // Used to delete console in production environment
-        drop_console: true,
-      },
-    },
+    target: 'es2015',
+    minify: 'esbuild',
     // watch: {},
     rollupOptions: {
       external: ['react', 'react-dom'],
