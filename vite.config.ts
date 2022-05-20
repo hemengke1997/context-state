@@ -23,15 +23,15 @@ export default defineConfig({
       fileName: 'index',
       formats: ['es', 'umd'],
     },
-    target: 'es2015',
+    target: 'es6',
     minify: 'esbuild',
     // watch: {},
     rollupOptions: {
       external: ['react', 'react-dom'],
       output: {
         globals: {
-          react: 'react',
-          'react-dom': 'react-dom',
+          react: 'React',
+          'react-dom': 'React-dom',
         },
       },
     },
