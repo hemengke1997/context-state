@@ -39,9 +39,7 @@ type UseHookType<Value, State> = (value?: State) => Value;
 
 const ContainerCache = new Map();
 
-const isDev = process.env.NODE_ENV === 'development';
-
-console.log(isDev, 'isDev');
+const isDev = process.env.NODE_ENV !== 'production';
 
 function getCache<T>(key: string): T {
   return ContainerCache.get(key);
@@ -52,7 +50,7 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
     ContextValue<Value> | typeof EMPTY
   >(EMPTY);
 
-  const key = useHook.toString().slice(0, 20);
+  const key = useHook.toString().slice(0, 24);
 
   const Provider: React.FC<ContainerProviderProps<State>> = ({ value, children }) => {
     const providerValue = useHook(value);
