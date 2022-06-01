@@ -26,22 +26,37 @@ const CONTEXT_VALUE = Symbol();
 
 const EMPTY = Symbol();
 
+type ContextInnerValue<Value> = {
+  /* "v"alue     */ v: MutableRefObject<Value>;
+  /* "l"isteners */ l: Set<(listener: Value) => void>;
+};
+
 type ContextValue<Value> = {
-  [CONTEXT_VALUE]: {
-    /* "v"alue     */ v: MutableRefObject<Value>;
-    /* "l"isteners */ l: Set<(listener: Value) => void>;
-  };
+  [CONTEXT_VALUE]: ContextInnerValue<Value>;
 };
 
 type UseHookType<Value, State> = (value?: State) => Value;
+
+const ContainerCache = new Map();
+
+const isDev = process.env.NODE_ENV === 'development';
+
+console.log(isDev, 'isDev');
+
+function getCache<T>(key: string): T {
+  return ContainerCache.get(key);
+}
 
 export function createContainer<Value, State = any>(useHook: UseHookType<Value, State>) {
   const Context: React.Context<ContextValue<Value> | typeof EMPTY> = React.createContext<
     ContextValue<Value> | typeof EMPTY
   >(EMPTY);
 
+  const key = useHook.toString().slice(0, 20);
+
   const Provider: React.FC<ContainerProviderProps<State>> = ({ value, children }) => {
     const providerValue = useHook(value);
+
     const valueRef = useRef(providerValue);
     const contextValue = useRef<ContextValue<Value>>();
 
@@ -55,6 +70,11 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
         },
       };
     }
+
+    if (isDev) {
+      ContainerCache.set(key, contextValue.current);
+    }
+
     useIsomorphicLayoutEffect(() => {
       valueRef.current = providerValue;
       (contextValue.current as ContextValue<Value>)?.[CONTEXT_VALUE].l.forEach((listener) => {
@@ -73,8 +93,13 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
 
   function useContainer(): Value {
     const context = React.useContext(Context);
+
     if (context === EMPTY) {
-      throw new Error(ErrorText);
+      if (isDev) {
+        return getCache<ContextValue<Value>>(key)[CONTEXT_VALUE].v.current;
+      } else {
+        throw new Error(ErrorText);
+      }
     }
     return context?.[CONTEXT_VALUE].v.current;
   }
@@ -94,11 +119,15 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
   ): Selected {
     const context = React.useContext(Context);
 
-    if (context === EMPTY) {
-      throw new Error(ErrorText);
-    }
+    let contextValue = (context as ContextValue<Value>)?.[CONTEXT_VALUE];
 
-    const contextValue = context?.[CONTEXT_VALUE];
+    if (context === EMPTY) {
+      if (isDev) {
+        contextValue = getCache<ContextValue<Value>>(key)[CONTEXT_VALUE];
+      } else {
+        throw new Error(ErrorText);
+      }
+    }
 
     const {
       /* "v"alue     */ v: { current: value },
