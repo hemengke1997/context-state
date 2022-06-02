@@ -1,26 +1,27 @@
 # context-state
 
-> 简单、优雅的 React hooks 状态管理方案
+> React hooks 状态管理方案
 
 ## codesandbox
 
 [EXAMPLE](https://codesandbox.io/s/delicate-http-rkgv1?file=/src/CounterContainer.tsx)
 
-## 安装
+## 🔧 安装
 
 ```bash
 yarn add @minko-fe/context-state
 ```
 
-## 介绍
+## ✨ 介绍
 
-React Context 和 useContext 存在一些性能问题，当 context 上下文改变时，所有使用到 context 的组件都会更新渲染。 context-state 为解决性能问题而生。
+React Context 和 useContext 存在一些性能问题，当 context 上下文改变时，所有使用到 context 的组件都会更新渲染。
+使用`context-state`，**开发者不必考虑 context 穿透问题** 👏
 
 v1.1.0 之前，它使用 `calculateChangedBits` 来阻止 context 更新，但这个 API 将会被 React 废弃。
 
 v1.1.0 之后，将不再依赖 `calculateChangedBits`
 
-## Example
+## 🎈 Example
 
 ```tsx
 import React from 'react';
@@ -62,7 +63,7 @@ function App() {
 render(<App />, document.getElementById('root'));
 ```
 
-## API
+## 🐱‍💻 API
 
 ### `createContainer(useHook)`
 
@@ -124,7 +125,7 @@ function ChildComponent() {
 
 ### `Container.usePicker()`
 
-`useSelector` 的语法糖，更常用的写法
+`useSelector` 的语法糖
 
 ```tsx
 function ChildComponent() {
@@ -139,6 +140,6 @@ function ChildComponent() {
 
 _你可能会需要用 `useCallback` 记住一个回调，但由于内部函数必须经常重新创建，记忆效果不佳，导致子组件重复 render。对于复杂的子组件，重新渲染会对性能造成影响。通过 `useMemoizedFn`，可以保证函数地址永远不会变化。_
 
-### 灵感来源
+## 💡 灵感来源
 
 [unstated-next](https://github.com/jamiebuilds/unstated-next) | [use-context-selector](https://github.com/dai-shi/use-context-selector)
