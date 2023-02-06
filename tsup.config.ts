@@ -2,16 +2,14 @@ import { defineConfig } from 'tsup'
 
 export const tsup = defineConfig((option) => ({
   entry: ['src/index.ts'],
-  dts: !option.watch,
+  dts: true,
   clean: true,
   format: ['cjs', 'esm'],
   minify: false,
   sourcemap: !!option.watch,
-  esbuildOptions: (options) => {
-    if (options.format === 'cjs') {
-      options.footer = {
-        js: 'module.exports = module.exports.default;',
-      }
-    }
+  external: ['react', 'react-dom'],
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   },
+  pure: ['console.log'],
 }))

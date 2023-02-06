@@ -1,9 +1,11 @@
 {
-  "name": "@minko-fe/ts-template",
+  "name": "context-state",
   "version": "1.0.0",
-  "description": "a template for typescript project or plugin",
+  "description": "React state management library",
   "keywords": [
-    "TODO"
+    "react",
+    "hook",
+    "state management"
   ],
   "author": "hemengke <https://github.com/hemengke1997>",
   "main": "./dist/index.cjs",
@@ -35,7 +37,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hemengke1997/ts-template.git"
+    "url": "git+https://github.com/hemengke1997/context-state.git"
+  },
+  "homepage": "https://github.com/hemengke1997/context-state",
+  "bugs": {
+    "url": "https://github.com/hemengke1997/context-state/issues"
   },
   "license": "MIT",
   "devDependencies": {
@@ -43,12 +49,22 @@
     "@minko-fe/eslint-config": "^1.2.3",
     "@minko-fe/prettier-config": "^1.2.3",
     "@minko-fe/tsconfig": "^1.2.3",
+    "@testing-library/react": "^13.4.0",
+    "@types/node": "^18.11.19",
+    "@types/react": "^18.0.27",
+    "@vitejs/plugin-react": "^3.1.0",
     "bumpp": "^8.2.1",
     "conventional-changelog-cli": "^2.2.2",
     "eslint": "^8.27.0",
+    "jsdom": "^21.1.0",
     "prettier": "^2.7.1",
+    "react": "^18.2.0",
+    "react-error-boundary": "^3.1.4",
     "tsup": "^6.4.0",
     "typescript": "^4.8.4",
-    "vitest": "^0.24.5"
+    "vitest": "^0.28.4"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
   }
 }
