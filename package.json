@@ -1,6 +1,6 @@
 {
   "name": "context-state",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "React state management library",
   "keywords": [
     "react",
@@ -33,7 +33,7 @@
     "test": "vitest",
     "lint": "eslint .",
     "upgrade:deps": "pnpm update --i --L",
-    "bump": "pnpm changelog && bumpp package.json --commit --push --tag"
+    "bump": "pnpm changelog && bumpp package.json CHANGELOG.md --commit --push --tag -all"
   },
   "repository": {
     "type": "git",
