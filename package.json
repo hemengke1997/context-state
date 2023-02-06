@@ -1,6 +1,6 @@
 {
   "name": "context-state",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React state management library",
   "keywords": [
     "react",
