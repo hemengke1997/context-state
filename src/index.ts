@@ -1,6 +1,6 @@
 import React, { createElement, useRef } from 'react'
 import type { MutableRefObject } from 'react'
-import { pick, shallowEqual, useIsomorphicLayoutEffect, useMemoizedFn, useSafeState } from './utils'
+import { pick, shallowEqual, useIsomorphicLayoutEffect, useSafeState } from './utils'
 
 const ErrorText = '[context-state]: Component must be wrapped with <Container.Provider> 👻'
 
@@ -207,4 +207,4 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
   }
 }
 
-export { useMemoizedFn, shallowEqual }
+export { shallowEqual }

@@ -1,5 +1,5 @@
-import React from "react"
-import CounterContainer from "../../Counter"
+import React from 'react'
+import CounterContainer from '../../Counter'
 
 const A = React.memo(() => {
   const { count, setCount } = CounterContainer.usePicker(['count', 'setCount'])

@@ -1,70 +1,66 @@
 {
   "name": "context-state",
+  "type": "module",
   "version": "2.0.0",
   "description": "React state management library",
+  "author": "hemengke <https://github.com/hemengke1997>",
+  "license": "MIT",
+  "homepage": "https://github.com/hemengke1997/context-state",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hemengke1997/context-state.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hemengke1997/context-state/issues"
+  },
   "keywords": [
     "react",
     "hook",
     "state management"
   ],
-  "author": "hemengke <https://github.com/hemengke1997>",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    }
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module",
   "files": [
     "dist",
     "CHANGELOG.md",
     "README.md"
   ],
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "release": "pnpm run build && pnpm publish --access public",
     "preinstall": "npx only-allow pnpm",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "test": "vitest",
     "lint": "eslint .",
-    "upgrade:deps": "pnpm update --i --L",
-    "bump": "pnpm changelog && bumpp package.json CHANGELOG.md --commit --push --tag -all"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hemengke1997/context-state.git"
-  },
-  "homepage": "https://github.com/hemengke1997/context-state",
-  "bugs": {
-    "url": "https://github.com/hemengke1997/context-state/issues"
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "@minko-fe/commitlint-config": "^1.2.3",
-    "@minko-fe/eslint-config": "^1.2.3",
-    "@minko-fe/prettier-config": "^1.2.3",
-    "@minko-fe/tsconfig": "^1.2.3",
-    "@testing-library/react": "^13.4.0",
-    "@types/node": "^18.11.19",
-    "@types/react": "^18.0.27",
-    "@vitejs/plugin-react": "^3.1.0",
-    "bumpp": "^8.2.1",
-    "conventional-changelog-cli": "^2.2.2",
-    "eslint": "^8.27.0",
-    "jsdom": "^21.1.0",
-    "prettier": "^2.7.1",
-    "react": "^18.2.0",
-    "react-error-boundary": "^3.1.4",
-    "tsup": "^6.4.0",
-    "typescript": "^4.8.4",
-    "vitest": "^0.28.4"
+    "up": "pnpm update --i --L",
+    "bump": "bumpp package.json -c -p -t --all -x \"pnpm run changelog\""
   },
   "peerDependencies": {
     "react": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@minko-fe/eslint-config": "^1.2.32",
+    "@minko-fe/tsconfig": "^1.2.32",
+    "@testing-library/react": "^14.0.0",
+    "@types/node": "^18.15.10",
+    "@types/react": "^18.0.29",
+    "@vitejs/plugin-react": "^3.1.0",
+    "bumpp": "^9.0.0",
+    "conventional-changelog-cli": "^2.2.2",
+    "eslint": "^8.36.0",
+    "jsdom": "^21.1.1",
+    "react": "^18.2.0",
+    "react-error-boundary": "^4.0.2",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.2",
+    "vitest": "^0.29.7"
   }
 }

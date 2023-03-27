@@ -4,7 +4,7 @@ export const tsup = defineConfig((option) => ({
   entry: ['src/index.ts'],
   dts: true,
   clean: true,
-  format: ['esm'],
+  format: ['esm', 'cjs'],
   minify: false,
   sourcemap: !!option.watch,
   external: ['react', 'react-dom'],
