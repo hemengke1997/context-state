@@ -1,5 +1,5 @@
-import A from './components/A'
 import CounterContainer from './Counter'
+import A from './components/A'
 
 function App() {
   return (

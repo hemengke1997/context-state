@@ -1,5 +1,5 @@
-import React from 'react'
 import { createContainer } from 'context-state'
+import React from 'react'
 
 const CounterContainer = createContainer(() => {
   const [count, setCount] = React.useState(0)

@@ -1,5 +1,4 @@
-import React, { createElement, useRef } from 'react'
-import type { MutableRefObject } from 'react'
+import React, { type MutableRefObject, createElement, useRef } from 'react'
 import { pick, shallowEqual, useIsomorphicLayoutEffect, useSafeState } from './utils'
 
 const ErrorText = '[context-state]: Component must be wrapped with <Container.Provider> 👻'

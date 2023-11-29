@@ -1,23 +1,31 @@
 {
   "name": "context-state",
-  "type": "module",
   "version": "2.0.0",
   "description": "React state management library",
-  "author": "hemengke <https://github.com/hemengke1997>",
-  "license": "MIT",
-  "homepage": "https://github.com/hemengke1997/context-state",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hemengke1997/context-state.git"
-  },
-  "bugs": {
-    "url": "https://github.com/hemengke1997/context-state/issues"
-  },
+  "type": "module",
   "keywords": [
     "react",
     "hook",
     "state management"
   ],
+  "license": "MIT",
+  "homepage": "https://github.com/hemengke1997/context-state",
+  "bugs": {
+    "url": "https://github.com/hemengke1997/context-state/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hemengke1997/context-state.git"
+  },
+  "author": "hemengke <https://github.com/hemengke1997>",
+  "files": [
+    "CHANGELOG.md",
+    "README.md",
+    "dist"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -25,14 +33,6 @@
       "import": "./dist/index.js"
     }
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist",
-    "CHANGELOG.md",
-    "README.md"
-  ],
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
@@ -47,19 +47,21 @@
     "react": ">=16.8.0"
   },
   "devDependencies": {
-    "@minko-fe/eslint-config": "^1.2.32",
-    "@minko-fe/tsconfig": "^1.2.32",
+    "@minko-fe/eslint-config": "^2.0.6",
+    "@minko-fe/tsconfig": "^2.0.6",
     "@testing-library/react": "^14.0.0",
     "@types/node": "^18.15.10",
-    "@types/react": "^18.0.29",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
     "@vitejs/plugin-react": "^3.1.0",
     "bumpp": "^9.0.0",
     "conventional-changelog-cli": "^2.2.2",
-    "eslint": "^8.36.0",
+    "eslint": "^8.52.0",
     "jsdom": "^21.1.1",
     "react": "^18.2.0",
     "react-error-boundary": "^4.0.2",
-    "tsup": "^6.7.0",
+    "terser": "^5.24.0",
+    "tsup": "^7.2.0",
     "typescript": "^5.0.2",
     "vitest": "^0.29.7"
   }

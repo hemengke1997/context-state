@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { memo } from 'react'
 import CounterContainer from '../../Counter'
 
-const A = React.memo(() => {
+const A = memo(() => {
   const { count, setCount } = CounterContainer.usePicker(['count', 'setCount'])
   const increment = () => setCount((s) => s + 1)
   const renderCount = React.useRef(0)

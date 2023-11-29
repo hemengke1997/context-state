@@ -1,5 +1,5 @@
-import React from 'react'
 import { cleanup, fireEvent, render } from '@testing-library/react'
+import React from 'react'
 import { afterEach, beforeEach, describe, expect, it, vitest } from 'vitest'
 import { createContainer } from '../src'
 
