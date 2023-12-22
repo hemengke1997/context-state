@@ -1,5 +1,5 @@
-import React, { type MutableRefObject, createElement, useRef } from 'react'
-import { pick, shallowEqual, useIsomorphicLayoutEffect, useSafeState } from './utils'
+import React, { type MutableRefObject, type ReactNode, createElement, useReducer, useRef } from 'react'
+import { pick, shallowEqual, useIsomorphicLayoutEffect } from './utils'
 
 const ErrorText = '[context-state]: Component must be wrapped with <Container.Provider> 👻'
 
@@ -7,54 +7,49 @@ type EqualityFC<T = any> = (old: T, now: T) => boolean
 
 export type SelectorFn<Value, Selected> = (value: Value) => Selected
 
-export interface ContainerProviderProps<State = void> {
-  value?: State
-  children: React.ReactNode
-}
-
-export interface Container<Value, State = void> {
-  Provider: React.ComponentType<ContainerProviderProps<State>>
-  useContainer: () => Value
-}
-
 const CONTEXT_VALUE = Symbol('CONTEXT_VALUE')
 
 const EMPTY = Symbol('EMPTY')
 
+type Version = number
+type Listener<Value> = (action: { n: Version; v?: Value }) => void
+
 interface ContextInnerValue<Value> {
   /* "v"alue     */ v: MutableRefObject<Value>
-  /* "l"isteners */ l: Set<(listener: Value) => void>
+  /* versio"n"   */ n: MutableRefObject<Version>
+  /* "l"isteners */ l: Set<Listener<Value>>
 }
 
 interface ContextValue<Value> {
   [CONTEXT_VALUE]: ContextInnerValue<Value>
 }
 
-type UseHookType<Value, State> = (value?: State) => Value
+type UseHookType<InitialValue, Value> = (initialValue: InitialValue) => Value
 
 const ContainerCache = new Map()
 
 const isDev = process.env.NODE_ENV !== 'production'
 
-export function createContainer<Value, State = any>(useHook: UseHookType<Value, State>) {
+export function createContainer<Value, InitialValue>(useHook: UseHookType<InitialValue, Value>) {
   const Context: React.Context<ContextValue<Value> | typeof EMPTY> = React.createContext<
     ContextValue<Value> | typeof EMPTY
   >(EMPTY)
 
   const key = useHook.toString().slice(0, 24)
 
-  const Provider: React.FC<ContainerProviderProps<State>> = ({ value, children }) => {
-    const providerValue = useHook(value)
-
-    const valueRef = useRef(providerValue)
+  const Provider = ({ value, children }: { value?: InitialValue; children: ReactNode }) => {
+    const inHookValue = useHook(value as InitialValue)
+    const valueRef = useRef(inHookValue)
+    const versionRef = useRef(0)
     const contextValue = useRef<ContextValue<Value>>()
 
     if (!contextValue.current) {
-      const listeners = new Set<(listener: Value) => void>()
+      const listeners = new Set<Listener<Value>>()
 
       contextValue.current = {
         [CONTEXT_VALUE]: {
           /* "v"alue     */ v: valueRef,
+          /* versio"n"   */ n: versionRef,
           /* "l"isteners */ l: listeners,
         },
       }
@@ -65,11 +60,12 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
     }
 
     useIsomorphicLayoutEffect(() => {
-      valueRef.current = providerValue
+      valueRef.current = inHookValue
+      versionRef.current += 1
       ;(contextValue.current as ContextValue<Value>)?.[CONTEXT_VALUE].l.forEach((listener) => {
-        listener(providerValue)
+        listener({ n: versionRef.current, v: inHookValue })
       })
-    }, [providerValue])
+    }, [inHookValue])
 
     return createElement(
       Context.Provider,
@@ -80,21 +76,22 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
     )
   }
 
-  function useContainer(): Value {
-    const context = React.useContext(Context)
-
-    if (context === EMPTY) {
-      if (isDev) {
-        const contextValue = ContainerCache.get(key)[CONTEXT_VALUE].v.current
-        if (!contextValue) {
-          throw new Error(ErrorText)
-        }
-        return contextValue
-      } else {
-        throw new Error(ErrorText)
-      }
-    }
-    return context?.[CONTEXT_VALUE].v.current
+  /**
+   * @example
+   * import { createContainer } from 'context-state'
+   *
+   * const Container = createContainer(() => {
+   *  const [n, setN] = useState(0)
+   * })
+   *
+   * <Container.Provider>
+   *  <Container.Consumer>
+   *   {({n}) => <div>{n}</div>}
+   *  </Container.Consumer>
+   * </Container.Provider>
+   */
+  const Consumer = ({ children }: { children: (value: Value) => ReactNode }) => {
+    return children(useSelector((state) => state))
   }
 
   /**
@@ -127,57 +124,56 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
 
     const {
       /* "v"alue     */ v: { current: value },
+      /* versio"n"   */ n: { current: version },
       /* "l"isteners */ l: listeners,
     } = contextValue
 
-    const [, forceRender] = useSafeState(0)
-
     const selected = selector(value)
 
-    const previousRef = React.useRef<
-      | {
-          selector: SelectorFn<Value, Selected>
-          value: Value
-          selected: Selected
+    const [state, dispatch] = useReducer(
+      (prev: readonly [Value, Selected], action?: Parameters<Listener<Value>>[0]) => {
+        if (!action) {
+          // case for `dispatch()` below
+          return [value, selected] as const
         }
-      | undefined
-    >(undefined)
+        if (action.n === version) {
+          if (equalityFn(prev[1], selected)) {
+            return prev // bail out
+          }
+          return [value, selected] as const
+        }
+        try {
+          if ('v' in action) {
+            if (equalityFn(prev[0], action.v)) {
+              return prev // do not update
+            }
+            const nextSelected = selector(action.v!)
+            if (equalityFn(prev[1], nextSelected)) {
+              return prev // do not update
+            }
+            return [action.v, nextSelected] as const
+          }
+        } catch (e) {
+          // ignored (stale props or some other reason)
+        }
+        return [...prev] as const // schedule update
+      },
+      [value, selected] as const,
+    )
 
-    previousRef.current = {
-      selector,
-      value,
-      selected,
+    if (!equalityFn(state[1], selected)) {
+      // schedule re-render
+      // this is safe because it's self contained
+      dispatch()
     }
 
     useIsomorphicLayoutEffect(() => {
-      function checkForUpdates(nextValue: Value) {
-        try {
-          if (!previousRef.current) {
-            return
-          }
-
-          const previousCtx = previousRef.current
-
-          if (previousCtx.value === nextValue) {
-            return
-          }
-
-          const newSelected = previousCtx.selector(nextValue)
-
-          if (equalityFn(previousCtx.selected, newSelected)) {
-            return
-          }
-          forceRender((n) => n + 1)
-        } catch (e) {}
-      }
-      // register listener
-      listeners.add(checkForUpdates)
+      listeners.add(dispatch)
       return () => {
-        listeners.delete(checkForUpdates)
+        listeners.delete(dispatch)
       }
-    }, [])
-
-    return selected
+    }, [listeners])
+    return state[1]
   }
 
   /**
@@ -200,7 +196,7 @@ export function createContainer<Value, State = any>(useHook: UseHookType<Value, 
   return {
     Context,
     Provider,
-    useContainer,
+    Consumer,
     useSelector,
     usePicker,
   }

@@ -28,7 +28,6 @@ describe('render spec', () => {
 
     const Counter1 = React.memo(() => {
       const { count, setCount } = CounterContainer.usePicker(['count', 'setCount'])
-      const increment = () => setCount((s) => s + 1)
 
       const renderCount = React.useRef(0)
 
@@ -39,7 +38,7 @@ describe('render spec', () => {
       return (
         <div>
           <span>{count}</span>
-          <button type='button' onClick={increment}>
+          <button type='button' onClick={() => setCount((n) => n + 1)}>
             ADD1
           </button>
         </div>
@@ -64,24 +63,24 @@ describe('render spec', () => {
       )
     })
 
-    const Counter3 = React.memo(() => {
-      const increment = CounterContainer.useSelector((c) => c.increment)
-      return (
-        <button type='button' onClick={increment}>
-          ADD3
-        </button>
-      )
-    })
-
     const App = () => (
       <CounterContainer.Provider>
         <Counter1 />
         <Counter2 />
-        <Counter3 />
+        <CounterContainer.Consumer>
+          {({ increment }) => (
+            <div>
+              <button type='button' onClick={increment}>
+                ADD3
+              </button>
+            </div>
+          )}
+        </CounterContainer.Consumer>
       </CounterContainer.Provider>
     )
     const { getAllByText } = render(<App />)
     expect(() => fireEvent.click(getAllByText('ADD1')[0])).not.toThrow()
+    expect(() => fireEvent.click(getAllByText('ADD2')[0])).not.toThrow()
     expect(() => fireEvent.click(getAllByText('ADD3')[0])).not.toThrow()
   })
 

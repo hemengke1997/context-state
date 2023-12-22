@@ -5,8 +5,10 @@ export function shallowEqual(origin: any, next: any) {
   if (origin && typeof origin === 'object' && next && typeof next === 'object') {
     if (
       [...Object.keys(origin), ...Object.keys(next)].every(
-        // eslint-disable-next-line no-prototype-builtins
-        (k) => origin[k] === next[k] && origin.hasOwnProperty(k) && next.hasOwnProperty(k),
+        (k) =>
+          origin[k] === next[k] &&
+          Object.prototype.hasOwnProperty.call(origin, k) &&
+          Object.prototype.hasOwnProperty.call(next, k),
       )
     ) {
       return true
