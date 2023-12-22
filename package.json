@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git+https://github.com/hemengke1997/context-state.git"
   },
-  "author": "hemengke <https://github.com/hemengke1997>",
+  "author": "minko <https://github.com/hemengke1997>",
   "files": [
     "CHANGELOG.md",
     "README.md",
@@ -36,7 +36,6 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "preinstall": "npx only-allow pnpm",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "test": "vitest",
     "lint": "eslint .",
@@ -47,8 +46,8 @@
     "react": ">=16.8.0"
   },
   "devDependencies": {
-    "@minko-fe/eslint-config": "^2.0.6",
-    "@minko-fe/tsconfig": "^2.0.6",
+    "@minko-fe/eslint-config": "^2.0.7",
+    "@minko-fe/tsconfig": "^2.0.7",
     "@testing-library/react": "^14.0.0",
     "@types/node": "^18.15.10",
     "@types/react": "^18.2.45",

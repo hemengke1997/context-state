@@ -147,7 +147,7 @@ export function createContainer<Value, InitialValue>(useHook: UseHookType<Initia
             if (equalityFn(prev[0], action.v)) {
               return prev // do not update
             }
-            const nextSelected = selector(action.v!)
+            const nextSelected = selector(action.v)
             if (equalityFn(prev[1], nextSelected)) {
               return prev // do not update
             }
@@ -194,7 +194,6 @@ export function createContainer<Value, InitialValue>(useHook: UseHookType<Initia
   }
 
   return {
-    Context,
     Provider,
     Consumer,
     useSelector,

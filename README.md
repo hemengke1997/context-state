@@ -2,27 +2,27 @@
 
 > React hooks 状态管理方案
 
-## 🔧 安装
+## 安装
 
 ```bash
 pnpm add context-state
 ```
 
-## ✨ 介绍
+## 介绍
 
 React Context 和 useContext 存在一些性能问题，当 context 上下文改变时，所有使用到 context 的组件都会更新渲染。
 使用 `context-state`，**开发者不必考虑 context 穿透问题** 👏
 
 
-## 🎈 Example
+## Example
 
 ```tsx
-import { createContainer, useMemoizedFn } from 'context-state'
+import { createContainer } from 'context-state'
 import React from 'react'
 
 function useCounter() {
   const [count, setCount] = React.useState(0)
-  const increment = useMemoizedFn(() => setCount((c) => c + 1))
+  const increment = () => setCount((c) => c + 1)
 
   return {
     count,
@@ -56,7 +56,7 @@ function App() {
 render(<App />, document.getElementById('root'))
 ```
 
-## 🐱‍💻 API
+## API
 
 ### `createContainer(useHook)`
 
@@ -104,6 +104,18 @@ function ParentComponent({ children }) {
 }
 ```
 
+### `Container.Consumer`
+
+```tsx
+function ChildComponent() {
+  return (
+    <Container.Consumer>
+      {(value) => <span>{value}</span>}
+    </Container.Consumer>
+  )
+}
+```
+
 ### `Container.useSelector()`
 
 监听当前容器中选择后的值，若值发生改变，则触发 `rerender`
@@ -126,6 +138,6 @@ function ChildComponent() {
 }
 ```
 
-## 💡 灵感来源
+## 灵感来源
 
 [unstated-next](https://github.com/jamiebuilds/unstated-next) | [use-context-selector](https://github.com/dai-shi/use-context-selector)
