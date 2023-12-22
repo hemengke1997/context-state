@@ -31,6 +31,8 @@ describe('render spec', () => {
 
       const renderCount = React.useRef(0)
 
+      console.log(renderCount.current, 'current', count, 'count')
+
       if (renderCount.current !== count) throw new Error('Inconsistent rendering (1)!')
 
       renderCount.current += 1

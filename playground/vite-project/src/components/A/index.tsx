@@ -2,18 +2,17 @@ import React, { memo } from 'react'
 import CounterContainer from '../../Counter'
 
 const A = memo(() => {
-  const { count, setCount } = CounterContainer.useSelector((s) => ({ count: s.count, setCount: s.setCount }))
-  const increment = () => setCount((s) => s + 1)
-  const renderCount = React.useRef(0)
+  const { count, setCount } = CounterContainer.usePicker(['count', 'setCount'])
+  const renderCount = React.useRef(-1)
   renderCount.current += 1
 
   return (
     <div>
       <span>{count}</span>
-      <button type='button' onClick={increment}>
+      <button type='button' onClick={() => setCount((t) => t + 1)}>
         ADD1
       </button>
-      <span>{renderCount.current}</span>
+      <span>render times: {renderCount.current}</span>
     </div>
   )
 })
