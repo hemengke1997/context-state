@@ -120,12 +120,12 @@ export function createContainer<Value, InitialValue>(useHook: UseHookType<Initia
 
     const selected = selector(value)
 
-    const previous = useRef<{
+    const currentRef = useRef<{
       value: Value
       selected: Selected
     }>()
 
-    previous.current = {
+    currentRef.current = {
       value,
       selected,
     }
@@ -133,14 +133,14 @@ export function createContainer<Value, InitialValue>(useHook: UseHookType<Initia
     useIsomorphicLayoutEffect(() => {
       function checkForUpdates(nextValue: Value) {
         try {
-          if (!previous.current) {
+          if (!currentRef.current) {
             return
           }
-          if (previous.current.value === nextValue) {
+          if (currentRef.current.value === nextValue) {
             return
           }
-          const newSelected = selector(nextValue)
-          if (equalityFn(previous.current.selected, newSelected)) {
+          const nextSelected = selector(nextValue)
+          if (equalityFn(currentRef.current.selected, nextSelected)) {
             return
           }
           triggerRender((n) => n + 1)
