@@ -1,9 +1,14 @@
-# [2.1.0](https://github.com/hemengke1997/context-state/compare/v2.0.0...v2.1.0) (2023-12-22)
+# [2.2.0](https://github.com/hemengke1997/context-state/compare/v2.0.0...v2.2.0) (2024-02-29)
 
 
 ### Bug Fixes
 
 * replace useReducer with useRef to avoid render at initailzation ([0ea916b](https://github.com/hemengke1997/context-state/commit/0ea916b43f2bae1c75086961e3734eca26abd654))
+
+
+### Features
+
+* tree-shaking ([0530aa9](https://github.com/hemengke1997/context-state/commit/0530aa97021e5e70e133a70542bef86de11af2fd))
 
 
 
