@@ -1,15 +1,98 @@
-import { defineConfig } from 'tsup'
+import { replace } from 'esbuild-plugin-replace'
+import fs from 'node:fs'
+import path from 'node:path'
+import { type Options, defineConfig } from 'tsup'
 
-export const tsup = defineConfig((option) => ({
-  entry: ['src/index.ts'],
-  dts: true,
-  clean: true,
-  format: ['esm', 'cjs'],
-  minify: !option.watch && 'terser',
-  sourcemap: !!option.watch,
-  external: ['react', 'react-dom'],
-  define: {
-    'process.env.NODE_ENV': 'process.env.NODE_ENV',
+// To aviod nodejs error: ERR_UNSUPPORTED_DIR_IMPORT
+const fileSuffixPlugin = (suffix: '.js' | '.cjs' | '.mjs'): NonNullable<Options['esbuildPlugins']>[number] => ({
+  name: 'add-file-suffix',
+  setup(build) {
+    build.onResolve({ filter: /.*/ }, (args) => {
+      if (args.kind === 'entry-point') return
+      let importeePath = args.path
+
+      // is external module
+      if (importeePath[0] !== '.' && !path.isAbsolute(importeePath)) {
+        return { external: true }
+      }
+
+      if (!path.extname(importeePath) && !importeePath.endsWith('.js')) {
+        // is path dir?
+        const filePath = path.join(args.resolveDir, importeePath)
+
+        if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+          importeePath += `/index${suffix}`
+        } else {
+          importeePath += suffix
+        }
+        return { path: importeePath, external: true }
+      }
+      return {
+        path: importeePath,
+        external: true,
+      }
+    })
   },
+})
+
+const tsupConfig = (option: Options): Options => ({
+  entry: ['src/**/*.ts'],
+  dts: true,
+  clean: !option.watch,
+  splitting: false,
+  treeshake: true,
+  minify: !option.watch ? 'terser' : false,
+  sourcemap: !!option.watch,
+  external: ['react'],
   pure: option.watch ? [] : ['console.log'],
-}))
+  platform: 'neutral',
+})
+
+export const tsup = defineConfig((option) => [
+  {
+    ...tsupConfig(option),
+    target: 'es6',
+    format: ['esm'],
+    esbuildPlugins: [
+      replace({
+        'import.meta.env?.MODE': 'process.env.NODE_ENV',
+      }),
+      fileSuffixPlugin('.js'),
+    ],
+    outExtension: () => {
+      return {
+        js: '.js',
+      }
+    },
+    outDir: 'dist/esm',
+    dts: false,
+  },
+  {
+    ...tsupConfig(option),
+    target: 'es2020',
+    format: ['esm'],
+    outExtension: () => {
+      return {
+        js: '.mjs',
+      }
+    },
+    esbuildPlugins: [
+      replace({
+        'import.meta.env?.MODE': '(import.meta.env ? import.meta.env.MODE : undefined)',
+      }),
+      fileSuffixPlugin('.mjs'),
+    ],
+    outDir: 'dist/esm',
+  },
+  {
+    ...tsupConfig(option),
+    target: 'es6',
+    format: ['cjs'],
+    esbuildPlugins: [
+      replace({
+        'import.meta.env?.MODE': 'process.env.NODE_ENV',
+      }),
+      fileSuffixPlugin('.js'),
+    ],
+  },
+])

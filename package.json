@@ -2,7 +2,6 @@
   "name": "context-state",
   "version": "2.1.0",
   "description": "React state management library",
-  "type": "module",
   "keywords": [
     "react",
     "hook",
@@ -23,23 +22,32 @@
     "README.md",
     "dist"
   ],
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "import": {
+        "types": "./dist/esm/index.d.mts",
+        "default": "./dist/esm/index.mjs"
+      },
+      "module": {
+        "types": "./dist/esm/index.d.mts",
+        "default": "./dist/esm/index.js"
+      },
+      "default": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
     }
   },
+  "sideEffects": false,
   "scripts": {
     "dev": "tsup --watch",
-    "build": "tsup",
+    "build": "rm -rf dist && tsup",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "test": "vitest",
     "lint": "eslint .",
-    "up": "pnpm update --i --L",
+    "up": "taze -I -w",
     "bump": "bumpp package.json -c -p -t --all -x \"pnpm run changelog\""
   },
   "peerDependencies": {
@@ -55,12 +63,13 @@
     "@vitejs/plugin-react": "^3.1.0",
     "bumpp": "^9.0.0",
     "conventional-changelog-cli": "^2.2.2",
+    "esbuild-plugin-replace": "^1.4.0",
     "eslint": "^8.52.0",
     "jsdom": "^21.1.1",
     "react": "^18.2.0",
     "react-error-boundary": "^4.0.2",
     "terser": "^5.24.0",
-    "tsup": "^7.2.0",
+    "tsup": "^8.0.2",
     "typescript": "^5.0.2",
     "vitest": "^0.29.7"
   }
