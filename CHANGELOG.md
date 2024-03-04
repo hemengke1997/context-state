@@ -1,3 +1,12 @@
+## [2.2.1](https://github.com/hemengke1997/context-state/compare/v2.2.0...v2.2.1) (2024-03-04)
+
+
+### Performance Improvements
+
+* enhance browser compatibility ([279a104](https://github.com/hemengke1997/context-state/commit/279a1042ee61a0f3c2d6a86629b8f8b0f5abb1c1))
+
+
+
 # [2.2.0](https://github.com/hemengke1997/context-state/compare/v2.0.0...v2.2.0) (2024-02-29)
 
 
