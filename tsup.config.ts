@@ -41,17 +41,18 @@ const tsupConfig = (option: Options): Options => ({
   clean: !option.watch,
   splitting: false,
   treeshake: true,
-  minify: !option.watch ? 'terser' : false,
+  minify: !option.watch,
   sourcemap: !!option.watch,
   external: ['react'],
   pure: option.watch ? [] : ['console.log'],
-  platform: 'neutral',
+  platform: 'browser',
 })
 
 export const tsup = defineConfig((option) => [
+  // esm
   {
     ...tsupConfig(option),
-    target: 'es6',
+    target: 'es3',
     format: ['esm'],
     esbuildPlugins: [
       replace({
@@ -69,7 +70,7 @@ export const tsup = defineConfig((option) => [
   },
   {
     ...tsupConfig(option),
-    target: 'es2020',
+    target: 'es3',
     format: ['esm'],
     outExtension: () => {
       return {
@@ -84,9 +85,10 @@ export const tsup = defineConfig((option) => [
     ],
     outDir: 'dist/esm',
   },
+  // cjs
   {
     ...tsupConfig(option),
-    target: 'es6',
+    target: 'es3',
     format: ['cjs'],
     esbuildPlugins: [
       replace({
