@@ -1,3 +1,12 @@
+## [2.2.2](https://github.com/hemengke1997/context-state/compare/v2.2.1...v2.2.2) (2024-03-05)
+
+
+### Features
+
+* tree-shaking ([8e28eb7](https://github.com/hemengke1997/context-state/commit/8e28eb73f307d10926850a33ae57dfbc925cabb0))
+
+
+
 ## [2.2.1](https://github.com/hemengke1997/context-state/compare/v2.2.0...v2.2.1) (2024-03-04)
 
 
