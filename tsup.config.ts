@@ -46,13 +46,13 @@ const tsupConfig = (option: Options): Options => ({
   external: ['react'],
   pure: option.watch ? [] : ['console.log'],
   platform: 'browser',
+  target: 'es3',
 })
 
 export const tsup = defineConfig((option) => [
   // esm
   {
     ...tsupConfig(option),
-    target: 'es3',
     format: ['esm'],
     esbuildPlugins: [
       replace({
@@ -70,7 +70,6 @@ export const tsup = defineConfig((option) => [
   },
   {
     ...tsupConfig(option),
-    target: 'es3',
     format: ['esm'],
     outExtension: () => {
       return {
@@ -88,7 +87,6 @@ export const tsup = defineConfig((option) => [
   // cjs
   {
     ...tsupConfig(option),
-    target: 'es3',
     format: ['cjs'],
     esbuildPlugins: [
       replace({
