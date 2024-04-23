@@ -41,7 +41,7 @@ const tsupConfig = (option: Options): Options => ({
   clean: !option.watch,
   splitting: false,
   treeshake: true,
-  minify: !option.watch,
+  minify: false,
   sourcemap: !!option.watch,
   external: ['react'],
   pure: option.watch ? [] : ['console.log'],

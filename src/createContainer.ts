@@ -13,12 +13,12 @@ const EMPTY = Symbol('EMPTY')
 
 type Listener<Value> = (v: Value) => void
 
-interface ContextInnerValue<Value> {
+export interface ContextInnerValue<Value> {
   /* "v"alue     */ v: MutableRefObject<Value>
   /* "l"isteners */ l: Set<Listener<Value>>
 }
 
-interface ContextValue<Value> {
+export interface ContextValue<Value> {
   [CONTEXT_VALUE]: ContextInnerValue<Value>
 }
 
@@ -27,9 +27,7 @@ type UseHookType<InitialValue, Value> = (initialValue: InitialValue) => Value
 let __ContainerCache__: Map<string, ContextValue<any> | undefined>
 
 export function createContainer<Value, InitialValue>(useHook: UseHookType<InitialValue, Value>) {
-  const Context: React.Context<ContextValue<Value> | typeof EMPTY> = createContext<ContextValue<Value> | typeof EMPTY>(
-    EMPTY,
-  )
+  const Context: React.Context<ContextValue<Value> | Symbol> = createContext<ContextValue<Value> | Symbol>(EMPTY)
 
   let __cache_key__: string
   if (import.meta.env?.MODE !== 'production') {
