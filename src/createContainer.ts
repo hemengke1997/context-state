@@ -24,15 +24,11 @@ export interface ContextValue<Value> {
 
 type UseHookType<InitialValue, Value> = (initialValue: InitialValue) => Value
 
-let __ContainerCache__: Map<string, ContextValue<any> | undefined>
+// A hack way for resolving the `Context.Provider` injection
+const __ContainerCache__ = new WeakMap<UseHookType<any, any>, ContextValue<any>>()
 
 export function createContainer<Value, InitialValue>(useHook: UseHookType<InitialValue, Value>) {
   const Context: React.Context<ContextValue<Value> | Symbol> = createContext<ContextValue<Value> | Symbol>(EMPTY)
-
-  let __cache_key__: string
-  if (import.meta.env?.MODE !== 'production') {
-    __cache_key__ = useHook.toString()
-  }
 
   const Provider = ({ value, children }: { value?: InitialValue; children: ReactNode }) => {
     const inHookValue = useHook(value as InitialValue)
@@ -50,14 +46,7 @@ export function createContainer<Value, InitialValue>(useHook: UseHookType<Initia
       }
     }
 
-    if (import.meta.env?.MODE !== 'production') {
-      if (import.meta.env?.MODE !== 'production') {
-        if (!__ContainerCache__) {
-          __ContainerCache__ = new Map()
-        }
-      }
-      __ContainerCache__.set(__cache_key__, contextValue.current)
-    }
+    __ContainerCache__.set(useHook, contextValue.current)
 
     useIsomorphicLayoutEffect(() => {
       valueRef.current = inHookValue
@@ -105,15 +94,11 @@ export function createContainer<Value, InitialValue>(useHook: UseHookType<Initia
     let contextValue = (context as ContextValue<Value>)?.[CONTEXT_VALUE]
 
     if (context === EMPTY) {
-      if (import.meta.env?.MODE !== 'production') {
-        const cached = __ContainerCache__.get(__cache_key__)?.[CONTEXT_VALUE]
-        if (!cached) {
-          throw new Error(ErrorText)
-        } else {
-          contextValue = cached
-        }
-      } else {
+      const cached = __ContainerCache__.get(useHook)?.[CONTEXT_VALUE]
+      if (!cached) {
         throw new Error(ErrorText)
+      } else {
+        contextValue = cached
       }
     }
 

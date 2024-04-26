@@ -2,5 +2,6 @@
   "extends": "@minko-fe/tsconfig/tsconfig.lib",
   "compilerOptions": {
     "exactOptionalPropertyTypes": true
-  }
+  },
+  "exclude": ["**/dist"]
 }
