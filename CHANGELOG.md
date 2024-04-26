@@ -1,4 +1,4 @@
-# [2.4.0](https://github.com/hemengke1997/context-state/compare/v2.3.1...v2.4.0) (2024-04-26)
+# [3.0.0](https://github.com/hemengke1997/context-state/compare/v2.3.1...v3.0.0) (2024-04-26)
 
 
 ### Bug Fixes
