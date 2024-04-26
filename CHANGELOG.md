@@ -1,3 +1,17 @@
+# [2.4.0](https://github.com/hemengke1997/context-state/compare/v2.3.1...v2.4.0) (2024-04-26)
+
+
+### Bug Fixes
+
+* ci ([6d4be19](https://github.com/hemengke1997/context-state/commit/6d4be1954d075c837f2aebc92c36ef7c9ea22a47))
+
+
+### Features
+
+* weakmap cache context value ([fb389de](https://github.com/hemengke1997/context-state/commit/fb389de900b4481baddedc47d14815a6022ca897))
+
+
+
 ## [2.3.1](https://github.com/hemengke1997/context-state/compare/v2.3.0...v2.3.1) (2024-04-23)
 
 
