@@ -35,11 +35,11 @@
       },
       "module": {
         "types": "./dist/lib/index.d.mts",
-        "default": "./dist/lib/index.mjs"
+        "default": "./dist/lib/index.js"
       },
       "default": {
         "types": "./dist/lib/index.d.mts",
-        "default": "./dist/lib/index.mjs"
+        "default": "./dist/lib/index.js"
       }
     }
   },

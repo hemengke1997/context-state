@@ -27,8 +27,8 @@ export const tsup = defineConfig((option) => [
       }),
     ],
     outDir: 'dist/lib',
-    outExtension: () => ({ js: '.mjs' }), // custom dts extension not working
-    plugins: [bundleless({ ext: '.mjs' })],
+    outExtension: () => ({ js: '.js', dts: '.d.ts' }), // TODO: custom dts extension not working
+    plugins: [bundleless({ ext: '.js' })],
   },
   // esm
   {
