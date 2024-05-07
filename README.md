@@ -11,7 +11,7 @@ pnpm add context-state
 ## 介绍
 
 React Context 和 useContext 存在一些性能问题，当 context 上下文改变时，所有使用到 context 的组件都会更新渲染。
-使用 `context-state`，**开发者不必考虑 context 穿透问题** 👏
+使用 `context-state`，**开发者不必考虑 context 穿透问题**
 
 
 ## Example

@@ -25,17 +25,21 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
       "import": {
         "types": "./dist/esm/index.d.mts",
         "default": "./dist/esm/index.mjs"
       },
       "module": {
-        "types": "./dist/esm/index.d.mts",
-        "default": "./dist/esm/index.js"
+        "types": "./dist/lib/index.d.mts",
+        "default": "./dist/lib/index.mjs"
       },
       "default": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
+        "types": "./dist/lib/index.d.mts",
+        "default": "./dist/lib/index.mjs"
       }
     }
   },
@@ -47,7 +51,7 @@
     "test": "vitest",
     "lint": "eslint .",
     "up": "taze -I -w",
-    "bump": "bumpp package.json -c -p -t --all -x \"pnpm run changelog\""
+    "bump": "bumpp package.json -c --no-push -t --all -x \"pnpm run changelog\""
   },
   "peerDependencies": {
     "react": ">=16.8.0"
@@ -70,6 +74,7 @@
     "taze": "^0.13.7",
     "terser": "^5.30.4",
     "tsup": "^8.0.2",
+    "tsup-plugin-bundleless": "^0.1.2",
     "typescript": "^5.4.5",
     "vitest": "^1.5.2"
   }
