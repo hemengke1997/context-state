@@ -26,7 +26,7 @@ jobs:
           version: 8.7.0
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --filter .
 
       - name: Lint
         run: npm run lint
