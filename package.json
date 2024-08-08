@@ -47,7 +47,6 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "rm -rf dist && tsup",
-    "ci-install": "pnpm install --filter='!./playground/**'",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "test": "vitest",
     "lint": "eslint .",
@@ -60,6 +59,7 @@
   "devDependencies": {
     "@minko-fe/eslint-config": "^3.3.3",
     "@minko-fe/tsconfig": "^2.1.0",
+    "@swc/core": "^1.7.6",
     "@testing-library/react": "^16.0.0",
     "@types/node": "^18.19.43",
     "@types/react": "^18.3.3",
