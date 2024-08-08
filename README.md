@@ -5,7 +5,7 @@
 ## 安装
 
 ```bash
-pnpm add context-state
+npm i context-state
 ```
 
 ## 介绍
@@ -13,36 +13,38 @@ pnpm add context-state
 React Context 和 useContext 存在一些性能问题，当 context 上下文改变时，所有使用到 context 的组件都会更新渲染。
 使用 `context-state`，**开发者不必考虑 context 穿透问题**
 
-
 ## Example
 
 ```tsx
-import { createContainer } from 'context-state'
-import React from 'react'
+import { createContainer } from 'context-state';
+import React from 'react';
 
 function useCounter() {
-  const [count, setCount] = React.useState(0)
-  const increment = () => setCount((c) => c + 1)
+  const [count, setCount] = React.useState(0);
+  const increment = () => setCount((c) => c + 1);
 
   return {
     count,
     increment,
-  }
+  };
 }
 
-const CounterContainer = createContainer(useCounter)
+const CounterContainer = createContainer(useCounter);
 
 function CounterDisplay() {
-  const { count, increment } = CounterContainer.usePicker(['count', 'increment'])
+  const { count, increment } = CounterContainer.usePicker(['count', 'increment']);
 
   return (
     <div>
       {count}
-      <button type='button' onClick={increment}>
+      <button
+        type='button'
+        onClick={increment}
+      >
         ADD
       </button>
     </div>
-  )
+  );
 }
 
 function App() {
@@ -50,10 +52,10 @@ function App() {
     <CounterContainer.Provider>
       <CounterDisplay />
     </CounterContainer.Provider>
-  )
+  );
 }
 
-render(<App />, document.getElementById('root'))
+render(<App />, document.getElementById('root'));
 ```
 
 ## API
@@ -61,27 +63,27 @@ render(<App />, document.getElementById('root'))
 ### `createContainer(useHook)`
 
 ```tsx
-import { createContainer, useMemoizedFn } from 'context-state'
+import { createContainer, useMemoizedFn } from 'context-state';
 
 function useCustomHook() {
-  const [value, setInput] = useState()
-  const onChange = useMemoizedFn((e) => setValue(e.currentTarget.value))
+  const [value, setInput] = useState();
+  const onChange = useMemoizedFn((e) => setValue(e.currentTarget.value));
   return {
     value,
     onChange,
-  }
+  };
 }
 
-const Container = createContainer(useCustomHook)
+const Container = createContainer(useCustomHook);
 // Container === { Provider, usePicker }
 ```
 
 ### `<Container.Provider>`
 
 ```tsx
-const Container = createContainer(useCustomHook)
+const Container = createContainer(useCustomHook);
 function ParentComponent({ children }) {
-  return <Container.Provider>{children}</Container.Provider>
+  return <Container.Provider>{children}</Container.Provider>;
 }
 ```
 
@@ -89,18 +91,14 @@ function ParentComponent({ children }) {
 
 ```tsx
 function useCustomHook(value = '') {
-  const [value, setValue] = useState(value)
+  const [value, setValue] = useState(value);
   // ...
 }
 
-const Container = createContainer(useCustomHook)
+const Container = createContainer(useCustomHook);
 
 function ParentComponent({ children }) {
-  return (
-    <Container.Provider value='value'>
-      {children}
-    </Container.Provider>
-  )
+  return <Container.Provider value='value'>{children}</Container.Provider>;
 }
 ```
 
@@ -108,11 +106,7 @@ function ParentComponent({ children }) {
 
 ```tsx
 function ChildComponent() {
-  return (
-    <Container.Consumer>
-      {(value) => <span>{value}</span>}
-    </Container.Consumer>
-  )
+  return <Container.Consumer>{(value) => <span>{value}</span>}</Container.Consumer>;
 }
 ```
 
@@ -122,8 +116,8 @@ function ChildComponent() {
 
 ```tsx
 function ChildComponent() {
-  const value = Container.useSelector((state) => state.value)
-  return <span>{value}</span>
+  const value = Container.useSelector((state) => state.value);
+  return <span>{value}</span>;
 }
 ```
 
@@ -133,8 +127,8 @@ function ChildComponent() {
 
 ```tsx
 function ChildComponent() {
-  const { value } = Container.usePicker(['value'])
-  return <span>{value}</span>
+  const { value } = Container.usePicker(['value']);
+  return <span>{value}</span>;
 }
 ```
 

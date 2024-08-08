@@ -1,9 +1,10 @@
-import { type MutableRefObject, type ReactNode, createContext, createElement, useContext, useRef } from 'react'
+import { createContext, createElement, type MutableRefObject, type ReactNode, useContext, useRef } from 'react'
 import { pick, shallowEqual, useIsomorphicLayoutEffect, useSafeState } from './utils'
 
 const ErrorText = '[context-state]: Component must be wrapped with <Container.Provider>'
 
-type EqualityFC<T = any> = (old: T, now: T) => boolean
+type ShallowEqualFn<T = any> = (prev: T, current: T) => boolean
+type EqualityFn<T = any> = (prev: T, current: T, shallowEqual: ShallowEqualFn<T>) => boolean
 
 export type SelectorFn<Value, Selected> = (value: Value) => Selected
 
@@ -27,8 +28,13 @@ type UseHookType<InitialValue, Value> = (initialValue: InitialValue) => Value
 // A hack way for resolving the `Context.Provider` injection
 const __ContainerCache__ = new WeakMap<UseHookType<any, any>, ContextValue<any>>()
 
-export function createContainer<Value, InitialValue>(useHook: UseHookType<InitialValue, Value>) {
-  const Context: React.Context<ContextValue<Value> | Symbol> = createContext<ContextValue<Value> | Symbol>(EMPTY)
+export function createContainer<Value, InitialValue>(
+  useHook: UseHookType<InitialValue, Value>,
+  equalityFn: EqualityFn<Partial<Value>> = shallowEqual,
+) {
+  const _equalityFn = equalityFn
+
+  const Context: React.Context<ContextValue<Value> | symbol> = createContext<ContextValue<Value> | symbol>(EMPTY)
 
   const Provider = ({ value, children }: { value?: InitialValue; children: ReactNode }) => {
     const inHookValue = useHook(value as InitialValue)
@@ -85,10 +91,12 @@ export function createContainer<Value, InitialValue>(useHook: UseHookType<Initia
    *   return <div>{counter}</div>
    * }
    */
-  function useSelector<Selected>(
+  function useSelector<Selected extends Value>(
     selector: SelectorFn<Value, Selected>,
-    equalityFn: EqualityFC = shallowEqual,
+    equalityFn?: EqualityFn<Partial<Value>>,
   ): Selected {
+    const eq = equalityFn || _equalityFn
+
     const context = useContext(Context)
 
     let contextValue = (context as ContextValue<Value>)?.[CONTEXT_VALUE]
@@ -131,11 +139,11 @@ export function createContainer<Value, InitialValue>(useHook: UseHookType<Initia
             return
           }
           const nextSelected = selector(nextValue)
-          if (equalityFn(currentRef.current.selected, nextSelected)) {
+          if (eq(currentRef.current.selected, nextSelected, shallowEqual)) {
             return
           }
           triggerRender((n) => n + 1)
-        } catch (e) {}
+        } catch {}
       }
       // register listener
       listeners.add(checkForUpdates)
@@ -159,9 +167,9 @@ export function createContainer<Value, InitialValue>(useHook: UseHookType<Initia
    */
   function usePicker<Selected extends keyof Value>(
     selected: Selected[],
-    equalityFn: EqualityFC = shallowEqual,
+    equalityFn?: EqualityFn<Partial<Value>>,
   ): Pick<Value, Selected> {
-    return useSelector((state) => pick(state as Required<Value>, selected), equalityFn)
+    return useSelector((state) => pick(state as Required<Value>, selected) as Value, equalityFn)
   }
 
   return {
