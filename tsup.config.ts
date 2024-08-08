@@ -1,5 +1,5 @@
 import { replace } from 'esbuild-plugin-replace'
-import { type Options, defineConfig } from 'tsup'
+import { defineConfig, type Options } from 'tsup'
 import { bundleless } from 'tsup-plugin-bundleless'
 
 const tsupConfig = (option: Options): Options => ({
