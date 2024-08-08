@@ -30,7 +30,7 @@ const __ContainerCache__ = new WeakMap<UseHookType<any, any>, ContextValue<any>>
 
 export function createContainer<Value, InitialValue>(
   useHook: UseHookType<InitialValue, Value>,
-  equalityFn: EqualityFn<Partial<Value>> = shallowEqual,
+  equalityFn: EqualityFn = shallowEqual,
 ) {
   const _equalityFn = equalityFn
 
@@ -91,10 +91,7 @@ export function createContainer<Value, InitialValue>(
    *   return <div>{counter}</div>
    * }
    */
-  function useSelector<Selected extends Value>(
-    selector: SelectorFn<Value, Selected>,
-    equalityFn?: EqualityFn<Partial<Value>>,
-  ): Selected {
+  function useSelector<Selected>(selector: SelectorFn<Value, Selected>, equalityFn?: EqualityFn<Selected>): Selected {
     const eq = equalityFn || _equalityFn
 
     const context = useContext(Context)
@@ -167,9 +164,9 @@ export function createContainer<Value, InitialValue>(
    */
   function usePicker<Selected extends keyof Value>(
     selected: Selected[],
-    equalityFn?: EqualityFn<Partial<Value>>,
+    equalityFn?: EqualityFn<Pick<Value, Selected>>,
   ): Pick<Value, Selected> {
-    return useSelector((state) => pick(state as Required<Value>, selected) as Value, equalityFn)
+    return useSelector((state) => pick(state as Required<Value>, selected), equalityFn)
   }
 
   return {

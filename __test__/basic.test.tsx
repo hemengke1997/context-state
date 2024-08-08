@@ -20,6 +20,7 @@ describe('basic spec', () => {
 
     const Counter1 = React.memo(() => {
       const { count, setCount } = CounterContainer.usePicker(['count', 'setCount'])
+      // const x = CounterContainer.useSelector((s) => s.count)
       const increment = () => setCount((s) => s + 1)
       const renderCount = React.useRef(0)
       renderCount.current += 1
