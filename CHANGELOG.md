@@ -1,3 +1,12 @@
+## [3.1.1](https://github.com/hemengke1997/context-state/compare/v3.1.0...v3.1.1) (2024-08-08)
+
+
+### Bug Fixes
+
+* type ([c553848](https://github.com/hemengke1997/context-state/commit/c5538484ebe3039d5cb59f222b2040f7402ce13b))
+
+
+
 # [3.1.0](https://github.com/hemengke1997/context-state/compare/v3.0.0...v3.1.0) (2024-08-08)
 
 
