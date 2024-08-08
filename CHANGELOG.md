@@ -1,4 +1,17 @@
-# [3.0.0](https://github.com/hemengke1997/context-state/compare/v2.3.1...v3.0.0) (2024-04-26)
+# [3.1.0](https://github.com/hemengke1997/context-state/compare/v3.0.0...v3.1.0) (2024-08-08)
+
+
+### Features
+
+* eq fn type enhancement and global eq fn support ([00c5050](https://github.com/hemengke1997/context-state/commit/00c50506e53f9f8d08ca553ae4f8655f44f6e7ef))
+
+
+
+# [3.0.0](https://github.com/hemengke1997/context-state/compare/v2.4.0...v3.0.0) (2024-04-26)
+
+
+
+# [2.4.0](https://github.com/hemengke1997/context-state/compare/v2.3.1...v2.4.0) (2024-04-26)
 
 
 ### Bug Fixes
