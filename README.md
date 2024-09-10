@@ -16,8 +16,8 @@ React Context 和 useContext 存在一些性能问题，当 context 上下文改
 ## Example
 
 ```tsx
-import { createContainer } from 'context-state';
 import React from 'react';
+import { createContainer } from 'context-state';
 
 function useCounter() {
   const [count, setCount] = React.useState(0);
