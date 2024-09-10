@@ -26,7 +26,7 @@ export interface ContextValue<Value> {
 type UseHookType<InitialValue, Value> = (initialValue: InitialValue) => Value
 
 // A hack way for resolving the `Context.Provider` injection
-const __ContainerCache__ = new WeakMap<UseHookType<any, any>, ContextValue<any>>()
+const __ContainerCache__ = new Map<string, ContextValue<any>>()
 
 export function createContainer<Value, InitialValue>(
   useHook: UseHookType<InitialValue, Value>,
@@ -52,7 +52,11 @@ export function createContainer<Value, InitialValue>(
       }
     }
 
-    __ContainerCache__.set(useHook, contextValue.current)
+    if (__ContainerCache__.has(useHook.toString())) {
+      __ContainerCache__.delete(useHook.toString())
+    }
+
+    __ContainerCache__.set(useHook.toString(), contextValue.current)
 
     useIsomorphicLayoutEffect(() => {
       valueRef.current = inHookValue
@@ -99,7 +103,7 @@ export function createContainer<Value, InitialValue>(
     let contextValue = (context as ContextValue<Value>)?.[CONTEXT_VALUE]
 
     if (context === EMPTY) {
-      const cached = __ContainerCache__.get(useHook)?.[CONTEXT_VALUE]
+      const cached = __ContainerCache__.get(useHook.toString())?.[CONTEXT_VALUE]
       if (!cached) {
         throw new Error(ErrorText)
       } else {
