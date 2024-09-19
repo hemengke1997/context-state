@@ -2,6 +2,8 @@ import { replace } from 'esbuild-plugin-replace'
 import { defineConfig, type Options } from 'tsup'
 import { bundleless } from 'tsup-plugin-bundleless'
 
+const { plugins, esbuildPlugins } = bundleless()
+
 const tsupConfig = (option: Options): Options => ({
   entry: ['src/**/*.ts'],
   dts: true,
@@ -14,6 +16,7 @@ const tsupConfig = (option: Options): Options => ({
   pure: option.watch ? [] : ['console.log'],
   platform: 'browser',
   target: 'es3',
+  plugins,
 })
 
 export const tsup = defineConfig((option) => [
@@ -25,10 +28,10 @@ export const tsup = defineConfig((option) => [
       replace({
         'import.meta.env?.MODE': 'process.env.NODE_ENV',
       }),
+      ...esbuildPlugins,
     ],
     outDir: 'dist/lib',
     outExtension: () => ({ js: '.js', dts: '.d.ts' }), // TODO: custom dts extension not working
-    plugins: [bundleless({ ext: '.js' })],
   },
   // esm
   {
@@ -38,10 +41,10 @@ export const tsup = defineConfig((option) => [
       replace({
         'import.meta.env?.MODE': '(import.meta.env ? import.meta.env.MODE : undefined)',
       }),
+      ...esbuildPlugins,
     ],
     outDir: 'dist/esm',
     outExtension: () => ({ js: '.mjs' }),
-    plugins: [bundleless({ ext: '.mjs' })],
   },
   // cjs
   {
@@ -51,7 +54,7 @@ export const tsup = defineConfig((option) => [
       replace({
         'import.meta.env?.MODE': 'process.env.NODE_ENV',
       }),
+      ...esbuildPlugins,
     ],
-    plugins: [bundleless({ ext: '.js' })],
   },
 ])
