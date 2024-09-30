@@ -1,18 +1,19 @@
 # context-state
 
-> React hooks state management solution
+> React hooks 状态管理方案
 
-[中文文档](./README.zh.md)
+[English Docs](./README.md)
 
-## Install
+## 安装
 
 ```bash
 npm i context-state
 ```
 
-## Introduction
+## 介绍
 
-React Context and useContext have some performance issues. When the context changes, all components that use the context will re-render. With `context-state`, developers don't need to worry about context penetration issues.
+React Context 和 useContext 存在一些性能问题，当 context 上下文改变时，所有使用到 context 的组件都会更新渲染。
+使用 `context-state`，**开发者不必考虑 context 穿透问题**
 
 ## Example
 
@@ -113,7 +114,7 @@ function ChildComponent() {
 
 ### `Container.useSelector()`
 
-Listen to the selected value in the current container. If the value changes, it triggers a rerender.
+监听当前容器中选择后的值，若值发生改变，则触发 `rerender`
 
 ```tsx
 function ChildComponent() {
@@ -124,7 +125,7 @@ function ChildComponent() {
 
 ### `Container.usePicker()`
 
-A syntactic sugar for `useSelector`.
+`useSelector` 的语法糖
 
 ```tsx
 function ChildComponent() {
@@ -133,6 +134,6 @@ function ChildComponent() {
 }
 ```
 
-## Inspiration
+## 灵感来源
 
 [unstated-next](https://github.com/jamiebuilds/unstated-next) | [use-context-selector](https://github.com/dai-shi/use-context-selector)
