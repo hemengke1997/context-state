@@ -1,29 +1,16 @@
-import { createContext, createElement, type MutableRefObject, type ReactNode, useContext, useRef } from 'react'
+import { createContext, createElement, type ReactNode, useContext, useRef } from 'react'
+import {
+  CONTEXT_VALUE,
+  type ContextValue,
+  EMPTY,
+  type EqualityFn,
+  type Listener,
+  type SelectorFn,
+  type UseHookType,
+} from './types'
 import { pick, shallowEqual, useIsomorphicLayoutEffect, useSafeState } from './utils'
 
 const ErrorText = '[context-state]: Component must be wrapped with <Container.Provider>'
-
-type ShallowEqualFn<T = any> = (prev: T, current: T) => boolean
-type EqualityFn<T = any> = (prev: T, current: T, shallowEqual: ShallowEqualFn<T>) => boolean
-
-export type SelectorFn<Value, Selected> = (value: Value) => Selected
-
-const CONTEXT_VALUE = Symbol('CONTEXT_VALUE')
-
-const EMPTY = Symbol('EMPTY')
-
-type Listener<Value> = (v: Value) => void
-
-export interface ContextInnerValue<Value> {
-  /* "v"alue     */ v: MutableRefObject<Value>
-  /* "l"isteners */ l: Set<Listener<Value>>
-}
-
-export interface ContextValue<Value> {
-  [CONTEXT_VALUE]: ContextInnerValue<Value>
-}
-
-type UseHookType<InitialValue, Value> = (initialValue: InitialValue) => Value
 
 // A hack way for resolving the `Context.Provider` injection
 const __ContainerCache__ = new Map<string, ContextValue<any>>()
