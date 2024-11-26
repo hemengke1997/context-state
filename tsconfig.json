@@ -3,5 +3,5 @@
   "compilerOptions": {
     "exactOptionalPropertyTypes": true
   },
-  "exclude": ["**/dist"]
+  "exclude": ["**/dist", "**/node_modules"]
 }
