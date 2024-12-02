@@ -133,6 +133,11 @@ function ChildComponent() {
 }
 ```
 
+### `Container.useInContext()`
+
+Returns true if component is a descendant of a `<Container.Provider>`
+
+
 ## Inspiration
 
 [unstated-next](https://github.com/jamiebuilds/unstated-next) | [use-context-selector](https://github.com/dai-shi/use-context-selector)

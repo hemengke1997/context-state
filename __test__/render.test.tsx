@@ -106,4 +106,42 @@ describe('render spec', () => {
 
     expect(() => render(<App />)).toThrowError()
   })
+
+  it('should in context', () => {
+    const CounterContainer = createContainer(() => {
+      const [count, setCount] = React.useState(0)
+      return {
+        count,
+        setCount,
+      }
+    })
+    const Counter = React.memo(() => {
+      const inContext = CounterContainer.useInContext()
+      return <>{JSON.stringify(inContext)}</>
+    })
+    const App = () => (
+      <CounterContainer.Provider>
+        <Counter />
+      </CounterContainer.Provider>
+    )
+    const { container } = render(<App />)
+    expect(container).toMatchSnapshot()
+  })
+
+  it('should not in context', () => {
+    const CounterContainer = createContainer(() => {
+      const [count, setCount] = React.useState(0)
+      return {
+        count,
+        setCount,
+      }
+    })
+    const Counter = React.memo(() => {
+      const inContext = CounterContainer.useInContext()
+      return <>{JSON.stringify(inContext)}</>
+    })
+    const App = () => <Counter />
+    const { container } = render(<App />)
+    expect(container).toMatchSnapshot()
+  })
 })

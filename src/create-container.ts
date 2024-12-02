@@ -160,10 +160,19 @@ export function createContainer<Value, InitialValue>(
     return useSelector((state) => pick(state as Required<Value>, selected), equalityFn)
   }
 
+  /**
+   * Returns true if component is a descendant of a `<Container.Provider>`
+   */
+  function useInContext() {
+    const context = useContext(Context)
+    return context !== EMPTY
+  }
+
   return {
     Provider,
     Consumer,
     useSelector,
     usePicker,
+    useInContext,
   }
 }
