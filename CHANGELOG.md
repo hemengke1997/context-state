@@ -1,3 +1,12 @@
+# [3.2.0](https://github.com/hemengke1997/context-state/compare/v3.1.3...v3.2.0) (2024-12-02)
+
+
+### Features
+
+* useInContext ([fe1768f](https://github.com/hemengke1997/context-state/commit/fe1768f45c4a808b5e0f91d6fc5ae41e4369ac41))
+
+
+
 ## [3.1.3](https://github.com/hemengke1997/context-state/compare/v3.1.2...v3.1.3) (2024-11-26)
 
 
