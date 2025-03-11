@@ -1,6 +1,7 @@
 # context-state
 
-> React hooks state management solution
+> React state management solution with Context
+> Like unstated-next, but Pro
 
 [中文文档](./README.zh.md)
 
@@ -10,7 +11,11 @@
 npm i context-state
 ```
 
-## Introduction
+## Migrate
+
+If you are using v3, please refer to [here](./docs/migrate-v4.md) to upgrade to v4
+
+## Advantage
 
 React Context and useContext have some performance issues. When the context changes, all components that use the context will re-render. With `context-state`, developers don't need to worry about context penetration issues.
 
@@ -18,7 +23,7 @@ React Context and useContext have some performance issues. When the context chan
 
 ```tsx
 import React from 'react';
-import { createContainer } from 'context-state';
+import { createStore } from 'context-state';
 
 function useCounter() {
   const [count, setCount] = React.useState(0);
@@ -30,10 +35,10 @@ function useCounter() {
   };
 }
 
-const CounterContainer = createContainer(useCounter);
+const CounterStore = createStore(useCounter);
 
 function CounterDisplay() {
-  const { count, increment } = CounterContainer.usePicker(['count', 'increment']);
+  const { count, increment } = CounterStore.usePicker(['count', 'increment']);
 
   return (
     <div>
@@ -50,24 +55,27 @@ function CounterDisplay() {
 
 function App() {
   return (
-    <CounterContainer.Provider>
+    <CounterStore.Provider>
       <CounterDisplay />
-    </CounterContainer.Provider>
+    </CounterStore.Provider>
   );
 }
 
 render(<App />, document.getElementById('root'));
 ```
 
+
 ## API
 
-### `createContainer(useHook)`
+### `createContainer(useHook, options)`
 
 ```tsx
-import { createContainer, useMemoizedFn } from 'context-state';
+import { createStore, useMemoizedFn } from 'context-state';
 
-function useCustomHook() {
-  const [value, setInput] = useState();
+function useCustomHook(props: {
+  initialValue: string;
+}) {
+  const [value, setInput] = useState(props.initialValue);
   const onChange = useMemoizedFn((e) => setValue(e.currentTarget.value));
   return {
     value,
@@ -75,9 +83,17 @@ function useCustomHook() {
   };
 }
 
-const Container = createContainer(useCustomHook);
-// Container === { Provider, usePicker }
+const Store = createStore(useCustomHook, {
+  // middlewares, used to listen to store changes
+  middlewares: [{
+    onInit: () => {},
+    onChange: () => {}
+  }]
+});
+// Store === { Provider, useStore }
 ```
+
+If `useCustomHook` has parameters, they can be passed through `Store.Provider`.
 
 ### `<Container.Provider>`
 
@@ -88,56 +104,51 @@ function ParentComponent({ children }) {
 }
 ```
 
-### `<Container.Provider value>`
+### `<Store.Provider>`
 
 ```tsx
-function useCustomHook(value = '') {
-  const [value, setValue] = useState(value);
-  // ...
-}
-
-const Container = createContainer(useCustomHook);
-
+const Store = createStore(useCustomHook);
 function ParentComponent({ children }) {
-  return <Container.Provider value='value'>{children}</Container.Provider>;
+  return <Store.Provider initialValue={'value'}>{children}</Store.Provider>;
 }
 ```
 
-### `Container.Consumer`
+### `Store.useStore()`
+
+`useStore` is used to get the return value from the Provider.
+
+`useStore` accepts 3 types of parameters:
+
+1. Array. Only returns the values corresponding to the keys.
+  
+```tsx
+function App() {
+  const { count } = Store.useStore(['count']);
+}
+```
+
+2. Function. Returns the return value of the function.
 
 ```tsx
-function ChildComponent() {
-  return <Container.Consumer>{(value) => <span>{value}</span>}</Container.Consumer>;
+function App() {
+  const count = Store.useStore((store) => store.count);
 }
 ```
 
-### `Container.useSelector()`
-
-Listen to the selected value in the current container. If the value changes, it triggers a rerender.
+3. No parameters. Returns all values.
 
 ```tsx
-function ChildComponent() {
-  const value = Container.useSelector((state) => state.value);
-  return <span>{value}</span>;
+function App() {
+  const store = Store.useStore();
 }
 ```
 
-### `Container.usePicker()`
-
-A syntactic sugar for `useSelector`.
-
-```tsx
-function ChildComponent() {
-  const { value } = Container.usePicker(['value']);
-  return <span>{value}</span>;
-}
-```
-
-### `Container.useInContext()`
-
-Returns true if component is a descendant of a `<Container.Provider>`
-
+**For best performance, it is recommended to use 1 and 2, which can avoid unnecessary rendering.**
 
 ## Inspiration
 
-[unstated-next](https://github.com/jamiebuilds/unstated-next) | [use-context-selector](https://github.com/dai-shi/use-context-selector)
+[unstated-next](https://github.com/jamiebuilds/unstated-next)
+
+[use-context-selector](https://github.com/dai-shi/use-context-selector)
+
+[hox](https://github.com/umijs/hox)

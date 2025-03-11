@@ -5,13 +5,13 @@ import { bundleless } from 'tsup-plugin-bundleless'
 const { plugins, esbuildPlugins } = bundleless()
 
 const tsupConfig = (option: Options): Options => ({
-  entry: ['src/**/*.ts'],
+  entry: ['src/**/*.{ts,tsx}'],
   dts: true,
   clean: !option.watch,
   splitting: false,
   treeshake: true,
   minify: false,
-  sourcemap: !!option.watch,
+  sourcemap: false,
   external: ['react'],
   pure: option.watch ? [] : ['console.log'],
   platform: 'browser',

@@ -1,3 +1,6 @@
+/**
+ * compare two objects shallowly
+ */
 export function shallowEqual(origin: any, next: any) {
   if (Object.is(origin, next)) {
     return true

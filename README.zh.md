@@ -1,6 +1,7 @@
 # context-state
 
-> React hooks 状态管理方案
+> 基于 React Context 的 hooks 状态管理方案
+> 类似 `unstated-next`，但是更强大
 
 [English Docs](./README.md)
 
@@ -10,16 +11,19 @@
 npm i context-state
 ```
 
-## 介绍
+## 升级
 
-React Context 和 useContext 存在一些性能问题，当 context 上下文改变时，所有使用到 context 的组件都会更新渲染。
-使用 `context-state`，**开发者不必考虑 context 穿透问题**
+如果你使用v3，请参考[这里](./docs/migrate-v4.zh.md)升级到v4
 
-## Example
+## 优势
+
+React Context 和 useContext 存在一些性能问题，当 context 变化时，所有使用 context 的组件都会重新渲染。`context-state` 可以解决这个问题，开发者不需要担心 context 穿透问题。
+
+## 例子
 
 ```tsx
 import React from 'react';
-import { createContainer } from 'context-state';
+import { createStore } from 'context-state';
 
 function useCounter() {
   const [count, setCount] = React.useState(0);
@@ -31,10 +35,10 @@ function useCounter() {
   };
 }
 
-const CounterContainer = createContainer(useCounter);
+const CounterStore = createStore(useCounter);
 
 function CounterDisplay() {
-  const { count, increment } = CounterContainer.usePicker(['count', 'increment']);
+  const { count, increment } = CounterStore.usePicker(['count', 'increment']);
 
   return (
     <div>
@@ -51,9 +55,9 @@ function CounterDisplay() {
 
 function App() {
   return (
-    <CounterContainer.Provider>
+    <CounterStore.Provider>
       <CounterDisplay />
-    </CounterContainer.Provider>
+    </CounterStore.Provider>
   );
 }
 
@@ -62,13 +66,15 @@ render(<App />, document.getElementById('root'));
 
 ## API
 
-### `createContainer(useHook)`
+### `createStore(useHook, options)`
 
 ```tsx
-import { createContainer, useMemoizedFn } from 'context-state';
+import { createStore, useMemoizedFn } from 'context-state';
 
-function useCustomHook() {
-  const [value, setInput] = useState();
+function useCustomHook(props: {
+  initialValue: string;
+}) {
+  const [value, setInput] = useState(props.initialValue);
   const onChange = useMemoizedFn((e) => setValue(e.currentTarget.value));
   return {
     value,
@@ -76,64 +82,60 @@ function useCustomHook() {
   };
 }
 
-const Container = createContainer(useCustomHook);
-// Container === { Provider, usePicker }
+const Store = createStore(useCustomHook, {
+  // 中间件，用于监听 store 的变化
+  middlewares: [{
+    onInit: () => {},
+    onChange: () => {}
+  }]
+});
+// Store === { Provider, useStore }
 ```
 
-### `<Container.Provider>`
+如果 `useCustomHook` 有参数，可以通过 `Store.Provider` 传递。
+
+### `<Store.Provider>`
 
 ```tsx
-const Container = createContainer(useCustomHook);
+const Store = createStore(useCustomHook);
 function ParentComponent({ children }) {
-  return <Container.Provider>{children}</Container.Provider>;
+  return <Store.Provider initialValue={'value'}>{children}</Store.Provider>;
 }
 ```
 
-### `<Container.Provider value>`
+### `Store.useStore()`
 
+`useStore` 用于获取 `Provider` 中的返回值。
+
+`useStore` 接受3种参数：
+
+1. 数组。只返回对应key的值
 ```tsx
-function useCustomHook(value = '') {
-  const [value, setValue] = useState(value);
-  // ...
-}
-
-const Container = createContainer(useCustomHook);
-
-function ParentComponent({ children }) {
-  return <Container.Provider value='value'>{children}</Container.Provider>;
+function App() {
+  const { count } = Store.useStore(['count']);
 }
 ```
 
-### `Container.Consumer`
-
+2. 函数。返回函数的返回值。
 ```tsx
-function ChildComponent() {
-  return <Container.Consumer>{(value) => <span>{value}</span>}</Container.Consumer>;
+function App() {
+  const count = Store.useStore((store) => store.count);
 }
 ```
 
-### `Container.useSelector()`
-
-监听当前容器中选择后的值，若值发生改变，则触发 `rerender`
-
+3. 无参数。返回所有值。
 ```tsx
-function ChildComponent() {
-  const value = Container.useSelector((state) => state.value);
-  return <span>{value}</span>;
+function App() {
+  const store = Store.useStore();
 }
 ```
 
-### `Container.usePicker()`
-
-`useSelector` 的语法糖
-
-```tsx
-function ChildComponent() {
-  const { value } = Container.usePicker(['value']);
-  return <span>{value}</span>;
-}
-```
+**为了最佳性能，建议使用1、2，这样可以避免不必要的渲染。**
 
 ## 灵感来源
 
-[unstated-next](https://github.com/jamiebuilds/unstated-next) | [use-context-selector](https://github.com/dai-shi/use-context-selector)
+[unstated-next](https://github.com/jamiebuilds/unstated-next)
+
+[use-context-selector](https://github.com/dai-shi/use-context-selector)
+
+[hox](https://github.com/umijs/hox)

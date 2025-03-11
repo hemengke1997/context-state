@@ -1,13 +1,13 @@
 import React from 'react'
 import { cleanup, fireEvent, render } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import { createContainer } from '../src'
+import { createStore } from '../src'
 
 describe('basic spec', () => {
   afterEach(cleanup)
 
   it('counter', () => {
-    const CounterContainer = createContainer(() => {
+    const CounterStore = createStore(() => {
       const [count, setCount] = React.useState(0)
       const [count2, setCount2] = React.useState(0)
       return {
@@ -19,8 +19,7 @@ describe('basic spec', () => {
     })
 
     const Counter1 = React.memo(() => {
-      const { count, setCount } = CounterContainer.usePicker(['count', 'setCount'])
-      // const x = CounterContainer.useSelector((s) => s.count)
+      const { count, setCount } = CounterStore.useStore(['count', 'setCount'])
       const increment = () => setCount((s) => s + 1)
       const renderCount = React.useRef(0)
       renderCount.current += 1
@@ -37,7 +36,7 @@ describe('basic spec', () => {
     })
 
     const Counter2 = React.memo(() => {
-      const { count2, setCount2 } = CounterContainer.usePicker(['count2', 'setCount2'])
+      const { count2, setCount2 } = CounterStore.useStore(['count2', 'setCount2'])
       const increment = () => setCount2((s) => s + 1)
       const renderCount = React.useRef(0)
       renderCount.current += 1
@@ -53,10 +52,10 @@ describe('basic spec', () => {
     })
 
     const App = () => (
-      <CounterContainer.Provider>
+      <CounterStore.Provider>
         <Counter1 />
         <Counter2 />
-      </CounterContainer.Provider>
+      </CounterStore.Provider>
     )
     const { getAllByText, container } = render(<App />)
     expect(container).toMatchSnapshot()
