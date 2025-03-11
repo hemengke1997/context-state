@@ -1,3 +1,12 @@
+## [4.0.1](https://github.com/hemengke1997/context-state/compare/v4.0.0...v4.0.1) (2025-03-11)
+
+
+### Performance Improvements
+
+* improve rendering performance ([49278a5](https://github.com/hemengke1997/context-state/commit/49278a5b8a06c022d1f0ced9e751309c875bb14e))
+
+
+
 # [4.0.0](https://github.com/hemengke1997/context-state/compare/v3.2.0...v4.0.0) (2025-03-11)
 
 

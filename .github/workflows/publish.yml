@@ -21,12 +21,10 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.0.1
-        with:
-          version: 9.7.1
+        uses: pnpm/action-setup@v3
 
       - name: Install Dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: Build
         run: pnpm run build
