@@ -1,3 +1,12 @@
+# [4.0.0](https://github.com/hemengke1997/context-state/compare/v3.2.0...v4.0.0) (2025-03-11)
+
+
+### Features
+
+* v4 ([68e403b](https://github.com/hemengke1997/context-state/commit/68e403b5ae361d180bec274d04c5d1ea74e09962))
+
+
+
 # [3.2.0](https://github.com/hemengke1997/context-state/compare/v3.1.3...v3.2.0) (2024-12-02)
 
 

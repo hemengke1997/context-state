@@ -12,6 +12,7 @@ At the same time, unnecessary APIs are abandoned to reduce the learning cost on 
 2. Deprecated `Consumer`
 3. Deprecated `usePicker`/`useSelector`, use `useStore`
 4. Deprecated `useInContext`
+5. Deprecated `value` attribute of `Provider`, use the parameter of `useHook` as the initial value
 
 ## Features
 

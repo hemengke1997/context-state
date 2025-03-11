@@ -12,6 +12,7 @@
 2. 废弃 `Consumer`
 3. 废弃 `usePicker`/`useSelector`，使用 `useStore`
 4. 废弃 `useInContext`
+5. 废弃 `Provider` 的 `value` 属性，使用 `useHook` 的参数作为初始值
 
 ## Features
 
