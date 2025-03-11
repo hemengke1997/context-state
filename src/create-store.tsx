@@ -2,7 +2,7 @@ import { createContext, memo, type PropsWithChildren, useContext, useEffect, use
 import { useSyncExternalStore } from 'use-sync-external-store/shim'
 import { Publisher } from './publisher'
 import { type EqualityFn, type Middleware, type SelectorFn, type UseHookType } from './types'
-import { pick, shallowEqual, useIsomorphicLayoutEffect } from './utils'
+import { pick, shallowEqual } from './utils'
 import { defaults } from './utils/defaults'
 
 const ErrorText = '[context-state]: Component must be wrapped with <Store.Provider>'
@@ -36,7 +36,7 @@ export function createStore<Value, InitialValue>(
     const [publisher] = useState(() => new Publisher<Value, InitialValue>(useHook))
     publisher.data = useHook(p as InitialValue)
 
-    useIsomorphicLayoutEffect(() => {
+    useEffect(() => {
       publisher.notify()
     })
 
