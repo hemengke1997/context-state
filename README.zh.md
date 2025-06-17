@@ -69,13 +69,13 @@ render(<App />, document.getElementById('root'));
 ### `createStore(useHook, options)`
 
 ```tsx
-import { createStore, useMemoizedFn } from 'context-state';
+import { createStore, useMemoFn } from 'context-state';
 
 function useCustomHook(props: {
   initialValue: string;
 }) {
   const [value, setInput] = useState(props.initialValue);
-  const onChange = useMemoizedFn((e) => setValue(e.currentTarget.value));
+  const onChange = useMemoFn((e) => setValue(e.currentTarget.value));
   return {
     value,
     onChange,
